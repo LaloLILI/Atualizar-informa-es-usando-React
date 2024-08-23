@@ -116,11 +116,11 @@ export class Pessoa {
 
     static async listarPessoas(): Promise<Array<Pessoa> | null> {
         const listaPessoas: Array<Pessoa> = [];
-        const querySelectPessoas = `SELECT * FROM pessoas`;
-
+        const querySelectPessoas = `SELECT * FROM pessoas ORDER BY nome ASC`; // Adicione ORDER BY aqui
+    
         try {
             const queryReturn = await database.query(querySelectPessoas);
-
+    
             queryReturn.rows.forEach((linha) => {
                 const pessoa = new Pessoa(
                     linha.nome,
@@ -132,16 +132,16 @@ export class Pessoa {
                     parseInt(linha.peso)
                 );
                 pessoa.setId(linha.id);
-
+    
                 listaPessoas.push(pessoa);
             });
-
+    
             return listaPessoas;
         } catch (error) {
             console.error(`Erro no modelo: ${error}`);
             return null;
         }
-    }
+    }    
 
     static async atualizarCadastroPessoa(pessoa: Pessoa): Promise<Boolean> {      
         let queryResult = false;
